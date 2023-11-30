@@ -1,0 +1,52 @@
+#!/bin/sh
+
+# Wrapper script for monero-wallet-cli to make it easier to use
+
+# Monero wallet folder
+WALLET_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/monerowallets
+
+[ ! -d $WALLET_DIR ] && mkdir -p $WALLET_DIR
+
+die() {
+	# Print error and exit
+	printf "%s\n" "$1" >&2
+	exit 1
+}
+
+cli() {
+	monero-wallet-cli --log-file "/dev/null" $1 || \
+		die "$0: monero-wallet-cli ran into an error"
+	exit 0
+}
+
+daemon() {
+	monerod --log-file "/dev/null" --non-interactive \
+		--enable-dns-blocklist \
+		--out-peers 32 --in-peers 64 \
+		--prune-blockchain \
+		--detach || die "$0: monerod ran into an error"
+}
+
+normal() {
+	# Run monero-wallet-cli normally
+	echo "Starting monerod"
+	daemon
+	trap "pkill monerod" HUP INT QUIT TERM PWR EXIT
+
+	wallet=$(ls -1 $WALLET_DIR/*.keys | dmenu -i -l 10 -p "Choose a wallet:")
+	[ -z "$wallet" ] && die "$0: wallet not opened"
+	cli "--wallet-file $wallet"
+}
+
+[ -z $1 ] && normal
+
+case $1 in
+	-n|--new)
+		# Create a new wallet
+		cli "--offline --generate-new-wallet $WALLET_DIR/$2" ;;
+	-d|--daemon)
+		# Only start daemon
+		daemon ;;
+	*)
+		die "$0: could not parse argument" ;;
+esac
