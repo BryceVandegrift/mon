@@ -1,6 +1,6 @@
 # mon
 
-A wrapper script for the Monero(XMR) command line wallet
+A wrapper script for the Monero (XMR) command line wallet
 
 ## Why?
 
@@ -18,8 +18,9 @@ to fix that by having a better command line interface and using sane defaults.
 
 ## Usage
 
-All Monero wallets are located in `XDG_DATA_DIR/monerowallets/`.
+All Monero wallets are located in `$XDG_DATA_DIR/monerowallets/`.
 
 - No argument: Run the wallet normally
-- -n: Create new wallet
+- -n **NAME**: Create new wallet
 - -d: Only start Monero daemon
+- -r: Run wallet using a remote node
