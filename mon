@@ -15,6 +15,11 @@ die() {
 	exit 1
 }
 
+is_int() {
+	# usage: is_int "number"
+	printf %d "$1" >/dev/null 2>&1
+}
+
 cli() {
 	monero-wallet-cli --log-file "/dev/null" $1 || \
 		die "$0: monero-wallet-cli ran into an error"
@@ -29,20 +34,31 @@ daemon() {
 		--detach || die "$0: monerod ran into an error"
 }
 
+getwallet() {
+	# grab list of wallets and ask user for wallet
+	keylist=$(ls -1 $WALLET_DIR/*.keys | nl -s " " -w 3)
+	echo "$keylist"
+	printf "Please select a key: "
+	read number
+
+	is_int $number || die "$0: please enter a number"
+	wallet=$(echo "$keylist" | grep "^.*$number " | awk '{ print $2 }')
+}
+
 normal() {
 	# Run monero-wallet-cli normally
 	echo "Starting monerod"
 	daemon
 	trap "pkill monerod" HUP INT QUIT TERM PWR EXIT
 
-	wallet=$(ls -1 $WALLET_DIR/*.keys | dmenu -i -l 10 -p "Choose a wallet:")
+	getwallet
 	[ -z "$wallet" ] && die "$0: wallet not opened"
 	cli "--wallet-file $wallet"
 }
 
 remote() {
 	# Run via remote node instead of daemon
-	wallet=$(ls -1 $WALLET_DIR/*.keys | dmenu -i -l 10 -p "Choose a wallet:")
+	getwallet
 	[ -z "$wallet" ] && die "$0: wallet not opened"
 	cli "--wallet-file $wallet --daemon-host $NODE"
 }

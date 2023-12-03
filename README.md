@@ -14,7 +14,6 @@ to fix that by having a better command line interface and using sane defaults.
 - Monero daemon
 - A POSIX shell
 - POSIX coreutils (GNU, busybox, or etc.)
-- dmenu
 
 ## Usage
 
