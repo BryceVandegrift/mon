@@ -15,6 +15,14 @@ to fix that by having a better command line interface and using sane defaults.
 - A POSIX shell (sh, dash, bash, etc.)
 - POSIX coreutils (GNU, busybox, or etc.)
 
+## Install
+
+Run as root:
+
+```
+make install
+```
+
 ## Usage
 
 All Monero wallets are located in `$XDG_DATA_DIR/monerowallets/`.
