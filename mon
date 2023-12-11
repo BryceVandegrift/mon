@@ -27,10 +27,13 @@ cli() {
 }
 
 daemon() {
+	DATA_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/bitmonero
+	[ ! -d $DATA_DIR ] && mkdir -p $DATA_DIR
 	monerod --log-file "/dev/null" --non-interactive \
 		--enable-dns-blocklist \
 		--out-peers 32 --in-peers 64 \
 		--prune-blockchain \
+		--data-dir $DATA_DIR \
 		--detach || die "$0: monerod ran into an error"
 }
 
