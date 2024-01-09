@@ -31,3 +31,4 @@ All Monero wallets are located in `$XDG_DATA_DIR/monerowallets/`.
 - `-n` **NAME**: Create new wallet
 - `-d`: Only start Monero daemon
 - `-r`: Run wallet using a remote node
+- `-h`: Show help information

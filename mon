@@ -78,6 +78,14 @@ case $1 in
 	-r|--remote)
 		# Use remote node
 		remote ;;
+	-h|--help)
+		# usage
+		printf "Usage: $0 [-n WALLET] [-dr]
+	-n WALLET	Create new wallet with name WALLET
+	-d		Only start monero daemon
+	-r		Use a remote node instead of running your own node
+	-h		Show this message\n"
+		exit 0 ;;
 	*)
 		die "$0: could not parse argument" ;;
 esac
