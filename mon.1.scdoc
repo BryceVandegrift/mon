@@ -1,0 +1,41 @@
+MON(1)
+
+# NAME
+
+mon - A wrapper for the Monero command line wallet
+
+# SYNOPSIS
+
+*mon* [options]
+
+# DESCRIPTION
+
+mon acts as a wrapper script for the Monero command line wallet. It makes the
+command line wallet easier to use and automatically organizes files created
+from the command line wallet into apporiate directories.
+
+# OPTIONS
+
+*-n, --new* <wallet>
+	Creates a new wallet with the name _wallet_. Places wallet into
+	*$XDG_DATA_HOME/monerowallets/* or *~/.local/share/monerowallets/* if
+	*$XDG_DATA_HOME* is not defined.
+
+*-d, --daemon*
+	Only runs the Monero daemon.
+
+*-r, --remote* <node>
+	Uses a remote node instead of Monero daemon. Default remote node is
+	_monero.stackwallet.com_ if no node is specified.
+
+*-h, --help*
+	Displays help message.
+
+# DAEMON
+
+Please note that by default the Monero daemon runs a pruned blockchain so
+space can be saved on the host system.
+
+# AUTHORS
+
+Maintained by Bryce Vandegrift <bryce@brycevandegrift.xyz>.

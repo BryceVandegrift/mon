@@ -63,7 +63,9 @@ remote() {
 	# Run via remote node instead of daemon
 	getwallet
 	[ -z "$wallet" ] && die "$0: wallet not opened"
-	cli "--wallet-file $wallet --daemon-host $NODE"
+	host="$NODE"
+	[ -n "$1" ] && host="$1"
+	cli "--wallet-file $wallet --daemon-host $host"
 }
 
 [ -z $1 ] && normal
@@ -77,7 +79,7 @@ case $1 in
 		daemon ;;
 	-r|--remote)
 		# Use remote node
-		remote ;;
+		remote "$2" ;;
 	-h|--help)
 		# usage
 		printf "Usage: $0 [-n WALLET] [-dr]
